@@ -4,9 +4,9 @@ Package that extends Combine with some useful APIs.
 
 ## New API:
 
-* [then](#then)
-* [shareReplay](#shareReplay)
-* [Future.deferred](#Future.deferred)
+* then
+* shareReplay
+* Future.deferred
 
 ## then
 
