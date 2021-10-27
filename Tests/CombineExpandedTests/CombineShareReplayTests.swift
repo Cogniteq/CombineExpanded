@@ -45,4 +45,22 @@ final class CombineShareReplayTests: XCTestCase {
 
         wait(for: [expectation1, expectation2], timeout: 0.1)
     }
+
+    func testStartAfterFirstSubscription() {
+        var cancellables = Set<AnyCancellable>()
+        var started = false
+        let publisher = Future<Void, Never>.deferred { future in
+            started = true
+            future(.success(()))
+        }.shareReplay(1)
+
+        XCTAssertFalse(started)
+
+        publisher
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: {})
+            .store(in: &cancellables)
+
+        XCTAssertTrue(started)
+    }
 }
