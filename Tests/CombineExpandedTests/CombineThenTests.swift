@@ -27,4 +27,26 @@ final class CombineThenTests: XCTestCase {
         
         XCTAssertTrue(publisher2Completed)
     }
+
+    func testIgnoreSelfValues() {
+        var cancellables = Set<AnyCancellable>()
+        var values = [Int]()
+
+        let publisher1 = Future<Int, Never>.deferred { future in
+            future(.success(1))
+        }
+
+        let publisher2 = Future<Int, Never>.deferred { future in
+            future(.success(2))
+        }
+
+        publisher1.then(publisher2)
+            .sink {
+                values.append($0)
+            }
+            .store(in: &cancellables)
+
+        XCTAssertTrue(values.count == 1)
+        XCTAssertTrue(values[0] == 2)
+    }
 }
