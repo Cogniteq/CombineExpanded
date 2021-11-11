@@ -3,6 +3,10 @@ import Foundation
 
 // from https://www.onswiftwings.com/posts/share-replay-operator/
 public extension Publisher {
+
+    /// Creates a new `Publisher` that will multicast values emitted by the underlying publisher, up to `bufferSize`. All clients of this `Publiher` will see the same version of the emitted values/errors.
+    /// - Parameter bufferSize: Number of values to hold.
+    /// - Returns: A caching producer that will hold up to last `bufferSize` values.
     func shareReplay(_ bufferSize: Int) -> AnyPublisher<Output, Failure> {
         multicast(subject: ReplaySubject(bufferSize)).autoconnect().eraseToAnyPublisher()
     }
